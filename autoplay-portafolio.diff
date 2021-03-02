@@ -1,0 +1,63 @@
+diff --git a/src/Portafolio/Bundle/CmsBundle/Resources/public/javascripts/general.js b/src/Portafolio/Bundle/CmsBundle/Resources/public/javascripts/general.js
+index 4d1dea3fd1a99a33f101f5594cbd4146dfba22a4..cc08b5cfe0269ef7026ec8b442c25e518aeef768 100755
+--- a/src/Portafolio/Bundle/CmsBundle/Resources/public/javascripts/general.js
++++ b/src/Portafolio/Bundle/CmsBundle/Resources/public/javascripts/general.js
+@@ -639,7 +639,9 @@ jQuery(function ($) {
+                 var href = $(this).attr('href');
+                 if (href.match(/-[0-9]+$/)) slug = href;
+             });
+-            slug = $(this).find('a').last().attr('href');
++            if (!slug) {
++                slug = $(this).find('a').last().attr('href');
++            }
+ 
+             $.get('/article/getMainVideo', {slug:slug}, function(data) {
+                 if(!data.id) {
+diff --git a/src/Portafolio/Bundle/CmsBundle/Resources/public/sass/cms/_extraordinary.scss b/src/Portafolio/Bundle/CmsBundle/Resources/public/sass/cms/_extraordinary.scss
+index b195b2e8568d9e7dda378a8843a9ef8b88552678..7df78d825c836a87e7c52ea316919e24f3c4d3d7 100644
+--- a/src/Portafolio/Bundle/CmsBundle/Resources/public/sass/cms/_extraordinary.scss
++++ b/src/Portafolio/Bundle/CmsBundle/Resources/public/sass/cms/_extraordinary.scss
+@@ -31,6 +31,7 @@
+                 .foto-destacadoMultimedia1{
+                     width: 100%;
+                     margin-top: 0;
++                    height: 400px;
+                     a.image.page-link img{
+                         width: 100%;
+                     }
+diff --git a/src/Portafolio/Bundle/CmsBundle/Resources/views/TemplateModule/home/extraordinary-default.html.twig b/src/Portafolio/Bundle/CmsBundle/Resources/views/TemplateModule/home/extraordinary-default.html.twig
+index 2cba231eaa79c4f5518efec6e325c24c699fd0a0..96fb3d3ab8b8a2f8c72150c9bf2ca44c4c246a46 100644
+--- a/src/Portafolio/Bundle/CmsBundle/Resources/views/TemplateModule/home/extraordinary-default.html.twig
++++ b/src/Portafolio/Bundle/CmsBundle/Resources/views/TemplateModule/home/extraordinary-default.html.twig
+@@ -4,16 +4,18 @@
+     wf-new
+     wf-toolbar-position="top"
+     wf-allow="+-"
+-    class="extraordinary-default"
+-    itemscope itemtype="https://schema.org/NewsArticle"
+-    >
+-
++    class="extraordinary-default play-inline"
++    itemscope itemtype="https://schema.org/NewsArticle">
+     <wf-multi-class name="settings">
+         <title>{{ 'settings.title'|trans }}</title>
+         <option value="hide-image">{{ 'hide_image'|trans }} </option>
+         <option value="hide-video">{{ 'hide_video'|trans }} </option>
+     </wf-multi-class>
+-
++    <wf-class name="autoplay">
++       <title>Autoplay</title>
++       <option value="autoplay">Activar autoplay</option>
++       <option value="">Desactivar autoplay</option>
++    </wf-class>
+     <section class="col1">
+         <div class="published-container">
+             <div
+@@ -61,7 +63,6 @@
+                 class="image page-link"
+                 itemprop="image"
+                 ></a>
+-            <a class="btn_player page-link"></a>
+         </figure>
+     </section>
+     {% block extra_info_article %}
